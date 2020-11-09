@@ -27,3 +27,13 @@
 	- Other Resources:
 		- Opinion Mining! Part of the Sentiment Analysis API now
 
+# Tech Stack:
+	-  nltk
+    -  tensorflow
+    -  keras
+
+
+# Architecture and Flow: 
+
+
+# Present and Writeup:
