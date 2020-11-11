@@ -5,7 +5,21 @@ nltk.download('stopwords')
 import re
 
 def dataPreprocessing(text):
-    text = re.sub(r'[^\w\s]', '', str(text).lower().strip())
+    # convert text to lowercase 
+    text = str(text).lower()
+    # replace "rt" with blank space 
+    text = re.sub("rt", '', str(text).strip())
+    # replace links with blank space (NOT WORKING)
+    text = re.sub("http\\w+", '', str(text).strip())
+    text = re.sub("https\\w+", '', str(text).strip())
+    # replace "mentions with usernames" with blank space 
+    text = re.sub("@\\w+", '', str(text).strip())
+    # replace all non-word characters with blank space
+    text = re.sub(r'[^\w\s]', '', str(text).strip())
+
+    #remove stopwords
+
+
     return text
   
 
@@ -22,6 +36,7 @@ tweet =[]
 # rpp= number of tweets to return per page, up to a max of 100
 # items() = the limit you want
 # Cursor helps with pagination and searching existing tweets instead of live
+# todo: how do I get the full tweet text instead of cut off tweets
 for tweet in tweepy.Cursor(api.search, q='#ClimateChange', rpp=100, lang="en").items(30):
     tweet = [tweet.text] 
     tweets.append(tweet)
@@ -31,3 +46,5 @@ df = pd.DataFrame(tweets)
 df.columns = ["Text"]
 df["ProcessedText"] = df["Text"].apply(dataPreprocessing) 
 print(df)
+
+df.to_csv("climate-change-twitter-data.csv", index=False)
